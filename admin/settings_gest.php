@@ -2,7 +2,7 @@
 require_once('../Connections/std_conn.php');
 require_once('../funzioni.php');
 
-$MM_authorizedUsers = "1,2";
+$MM_authorizedUsers = "1";
 require_once("restrict.php");
 
 //serve per i redirect e i link. "viaggi_gest.php"
@@ -58,7 +58,7 @@ if($_GET["orderby"]!=""){
 	}
 }
 mysqli_select_db($std_conn, $database_std_conn);
-$query_Recordset1 = sprintf("SELECT * FROM %s WHERE deleted = 0 AND level>=%s ORDER BY %s ASC", $tabella, GetSQLValueString($_SESSION['MM_UserGroup'],"int"), $orderby);
+$query_Recordset1 = sprintf("SELECT * FROM %s WHERE deleted = 0 ORDER BY %s ASC", $tabella, $orderby);
 $query_limit_Recordset1 = sprintf("%s LIMIT %d, %d", $query_Recordset1, $startRow_Recordset1, $maxRows_Recordset1);
 $Recordset1 = mysqli_query($std_conn, $query_limit_Recordset1) or die(mysqli_error($std_conn));
 $row_Recordset1 = mysqli_fetch_assoc($Recordset1);
@@ -147,8 +147,8 @@ if (isset($_SERVER['QUERY_STRING'])) {
 						<div class="notification attention png_bg">
 							<a href="#" class="close"><img src="resources/images/icons/cross_grey_small.png" title="Close this notification" alt="close" /></a>
 							<div>
-								Tramite la tabella sottostante puoi inserire / modificare / eliminare  l'elenco dei paesi raggiungibili.
-						  </div>
+						  Tramite la tabella sottostante puoi inserire / modificare / eliminare  l'elenco delle impostazioni amministrative. <strong><br />
+						  NON MODIFICARE SE NON CONOSCETE A FONDO IL SISTEMA!</strong></div>
 						</div>
 						
                         <form name="ordinamento" id="ordinamento" action="<?php echo $editFormAction; ?>" method="post" enctype="multipart/form-data">
@@ -170,9 +170,8 @@ if (isset($_SERVER['QUERY_STRING'])) {
 								<tr>
 									<td colspan="6">
 										<div class="bulk-actions align-left">
-	<?php if($_SESSION['MM_UserGroup']>1){ ?>
 	<a href="<?php echo $sufx_sezione; ?>_add.php">Aggiungi nuovo</a>
-	<?php } ?>	                               	    <!--
+	                               	    <!--
 										<select name="dropdown">
 												<option value="option1">Choose an action...</option>
 												<option value="option2">Edit</option>
@@ -216,9 +215,7 @@ if (isset($_SERVER['QUERY_STRING'])) {
     <td>
       <!-- Icons -->
       <a href="<?php echo $sufx_sezione; ?>_edit.php?id=<?php echo $row_Recordset1['id']; ?>" title="Edit"><img src="resources/images/icons/pencil.png" alt="Edit" /></a>
-      <?php if($_SESSION['MM_UserGroup']==1){ ?>
       <a href="<?php echo $sufx_sezione; ?>_gest.php?elimina=1&id=<?php echo $row_Recordset1['id']; ?>" title="Delete" onclick="return confirm('Eliminare il record?');"><img src="resources/images/icons/cross.png" alt="Delete" /></a> 
-      <?php } ?>
     </td>
   </tr>
   <?php } while ($row_Recordset1 = mysqli_fetch_assoc($Recordset1)); ?>

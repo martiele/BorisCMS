@@ -2,7 +2,7 @@
 require_once('../Connections/std_conn.php');
 require_once('../funzioni.php');
 
-$MM_authorizedUsers = "1,2";
+$MM_authorizedUsers = "1";
 require_once("restrict.php");
 
 //serve per i redirect e i link. "viaggi_gest.php"
@@ -31,11 +31,10 @@ if($_POST["nomeform"]=="vv"){
 	mysqli_free_result($nextOrdinamento);
 	*/
 		
-	$insertSQL = sprintf("INSERT INTO %s (nome, valore, level) VALUES (%s, %s, %s)",
+	$insertSQL = sprintf("INSERT INTO %s (nome, valore) VALUES (%s, %s)",
 			   $tabella,
 			   GetSQLValueString($_POST['nome'], "text"),
-			   GetSQLValueString($_POST['valore'], "text"),
-			   GetSQLValueString($_SESSION['MM_UserGroup'],"int"));
+			   GetSQLValueString($_POST['valore'], "text"));
 	mysqli_select_db($std_conn, $database_std_conn);
 	$Result1 = mysqli_query($std_conn, $insertSQL) or die(mysqli_error($std_conn));
 	$id_inserito = mysqli_insert_id($std_conn);

@@ -11,7 +11,7 @@ require_once("restrict.php");
 
 <html xmlns="http://www.w3.org/1999/xhtml"> 
 	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 		<title><?php echo $_SESSION["www_title"]; ?> - Admin Home</title>
 		<?php require_once("header.php"); ?>
 	</head>
@@ -46,20 +46,9 @@ require_once("restrict.php");
 					<div class="tab-content default-tab">
 					
 						<h4>Funzionalità di quest'area amministrativa</h4>
-						<p>Tramite questo pannello di controllo sarà possibile gestire i modelli ed i file excel generati.</p>
-						<p>In generale è possibile inserire / modificare / eliminare i contenuti delle 3 aree: 
-							<ul>
-								<li>Modelli di output</li>
-								<li>Elenco file generati</li>
-								<li>Utenti Amministratori (credenziali per gestire questo pannello)</li>
-							</ul>
-						</p>
-                        <p>Link rapidi alle funzioni più richieste:
-                    		<ul>
-                    			<li><a href="modelli_gest.php">Elenco Modelli</a></li>
-                    			<li><a href="files_add.php">Genera Nuovo File</a></li>
-                    		</ul>
-                        </p>
+						<p>Tramite questo pannello di controllo sarà possibile gestire i contenuti dell'area riservata, comprese le categorie documentali e gli utenti che possono accedervi.</p>
+						<p>In generale è possibile inserire / modificare / eliminare i contenuti delle 3 sezioni: categorie, articoli, utenti.</p>
+                        <p>Infine, tramite la sezione "Invio Notifiche" sar&agrave; possibile inviare delle email automatiche agli iscritti per comunicare la presenza di nuovi contenuti nella'rea riservata del sito.</p>
 						
 					</div> <!-- End #tab3 -->        
 					
@@ -80,12 +69,10 @@ require_once("restrict.php");
 					<div class="tab-content default-tab">
 					
 						<h4>In caso di necessit&agrave;</h4>
-						<p>Per assistenza potete scriverci in ogni momento:<br />
+						<p>Per assistenza potete scrivermi in ogni momento:<br />
 						  via mail 
-a <a href="mailto:info@aiosa.net">info@aiosa.net</a><br />
-o  al (+39) 340 3468558<br /><br />
-<a href="https://aiosa.net" target="_blank">www.aiosa.net</a>
-</p>
+a <a href="mailto:ing.martini@gmail.com">ing.martini@gmail.com</a><br />
+o  al (+39) 340 3468558</p>
 						
 					</div> <!-- End #tab3 -->        
 					
@@ -97,8 +84,14 @@ o  al (+39) 340 3468558<br /><br />
 			
 			<!-- Start Notifications -->
 		
-			
-			
+			<!--
+			<div class="notification error png_bg">
+				<a href="#" class="close"><img src="resources/images/icons/cross_grey_small.png" title="Close this notification" alt="close" /></a>
+				<div>
+					Attenzione!! Alcune funzionalità non sono ancora attive.
+				</div>
+			</div>
+            -->
 			
 
 			

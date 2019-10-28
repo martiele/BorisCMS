@@ -2,7 +2,7 @@
 require_once('../Connections/std_conn.php');
 require_once('../funzioni.php');
 
-$MM_authorizedUsers = "1,2";
+$MM_authorizedUsers = "1";
 require_once("restrict.php");
 
 //serve per i redirect e i link. "viaggi_gest.php"
@@ -102,7 +102,7 @@ header("Location: ".$sufx_sezione."_gest.php");
 							  <p>
 								<label>Nome</label>
 								<span id="sprytextfield1">
-								<input class="text-input medium-input" type="text" id="nome" name="nome" value="<?php echo $row_Recordset1["nome"]; ?>" <?php if($_SESSION['MM_UserGroup']>1){ echo 'readonly="readonly"'; } ?> />
+								<input class="text-input medium-input" type="text" id="nome" name="nome" value="<?php echo $row_Recordset1["nome"]; ?>" />
 								<span class="textfieldRequiredMsg input-notification error png_bg">È obbligatorio specificare un valore.</span></span>
                                 <br /><small>Es: www_title - Tale variabile sarà accessibile tramite $_SESSION["www_title"]</small>
 							  </p>

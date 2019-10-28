@@ -1,0 +1,329 @@
+<?php 
+require_once('../Connections/std_conn.php');
+require_once('../funzioni.php');
+
+$MM_authorizedUsers = "1,2,3";
+require_once("restrict.php");
+
+$sufx_sezione="sottocategorie";
+$tabella = "dny_sottocategoria";
+$sufx_sezione_padre="categorie";
+$tabella_padre = "dny_categoria";
+$label_id_padre = "id_categoria";
+$padre_get_post = "categoria";
+$id_padre=0;
+if( isset($_POST[$padre_get_post]) && ($_POST[$padre_get_post]>0) ){
+	$id_padre = $_POST[$padre_get_post];
+}else if( isset($_GET[$padre_get_post]) && ($_GET[$padre_get_post]>0) ){
+	$id_padre = $_GET[$padre_get_post];
+}
+if($id_padre<=0) die();
+
+
+$colname_Recordset1 = "-1";
+if (isset($_GET['id'])) {
+  $colname_Recordset1 = $_GET['id'];
+}
+mysqli_select_db($std_conn, $database_std_conn);
+$query_Recordset1 = sprintf("SELECT * FROM %s WHERE id = %s", 
+					$tabella,
+					GetSQLValueString($colname_Recordset1, "int"));
+$Recordset1 = mysqli_query($std_conn, $query_Recordset1) or die(mysqli_error($std_conn));
+$row_Recordset1 = mysqli_fetch_assoc($Recordset1);
+$totalRows_Recordset1 = mysqli_num_rows($Recordset1);
+if($totalRows_Recordset1==0)
+	die();
+
+
+mysqli_select_db($std_conn, $database_std_conn);
+$query_rs_lingua = "SELECT * FROM dny_lingua WHERE deleted = 0 ORDER BY ordinamento ASC";
+$rs_lingua = mysqli_query($std_conn, $query_rs_lingua) or die(mysqli_error($std_conn));
+$row_rs_lingua = mysqli_fetch_assoc($rs_lingua);
+$totalRows_rs_lingua = mysqli_num_rows($rs_lingua);
+if($totalRows_rs_lingua<=0){
+	die();
+}
+
+
+$editFormAction = $_SERVER['PHP_SELF'];
+if (isset($_SERVER['QUERY_STRING'])) {
+  $editFormAction .= "?" . htmlentities($_SERVER['QUERY_STRING']);
+}
+
+if($_POST["nomeform"]=="vv"){
+	$is_attivo = ($_POST['is_attivo']=="1")?1:0;
+	$color_code = (strtolower(trim($_POST["color_code"]))!="") ? strtolower(trim($_POST["color_code"])) : "#665145";
+	$insertSQL = sprintf("UPDATE %s SET 
+						 color_code=%s, 
+						 is_attivo=%s
+						 WHERE id=%s",
+			   $tabella,
+			   GetSQLValueString($color_code, "text"),
+			   GetSQLValueString($is_attivo, "int"),
+			   GetSQLValueString($_POST['id'], "int"));
+
+	mysqli_select_db($std_conn, $database_std_conn);
+	$Result1 = mysqli_query($std_conn, $insertSQL) or die(mysqli_error($std_conn));
+	$id_inserito = $_POST['id'];
+
+	//Rimuovo le associazioni (lingua) precedenti e le reinserisco
+	$insertSQL = sprintf("DELETE FROM %s WHERE id_ref=%s",
+	   $tabella."_lingua",
+	   GetSQLValueString($id_inserito, "int"));
+	mysqli_select_db($std_conn, $database_std_conn);
+	$Result1 = mysqli_query($std_conn, $insertSQL) or die(mysqli_error($std_conn));	
+	do{ 
+		$i = $row_rs_lingua["id"];
+		$nome = $_POST["nome".$i];
+		$descrizione = $_POST["descrizione".$i];
+		$is_attivo = ($_POST['is_attivo'.$i]=="1")?1:0;
+		if($nome!=""){
+			$insertSQL = sprintf("INSERT INTO %s (id_ref, id_lingua, nome, descrizione, is_attivo) VALUES (%s, %s, %s, %s, %s)",
+			   $tabella."_lingua",
+			   GetSQLValueString($id_inserito, "int"),
+			   GetSQLValueString($i, "int"),
+			   GetSQLValueString($nome, "text"),
+			   GetSQLValueString($descrizione, "text"),
+			   GetSQLValueString($is_attivo, "int"));
+			mysqli_select_db($std_conn, $database_std_conn);
+			$Result1 = mysqli_query($std_conn, $insertSQL) or die(mysqli_error($std_conn));
+			
+		}	
+	}while($row_rs_lingua = mysqli_fetch_assoc($rs_lingua));
+	mysqli_data_seek($rs_lingua,0);
+	$row_rs_lingua = mysqli_fetch_assoc($rs_lingua);	
+
+$stringa_errori_file = "";
+$uploaddir = $_SESSION["path_upload_admin"];
+
+// require_once("upload_redim_foto_script_categorie.php");
+
+
+logThis($sufx_sezione, "Modificato", $id_inserito);
+header("Location: ".$sufx_sezione."_gest.php?".$padre_get_post."=".$id_padre);
+
+}
+
+?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"> 
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title><?php echo $_SESSION["www_title"]; ?> - Modifica Categoria</title>
+		<?php require_once("header.php"); ?>
+
+        <script src="../SpryAssets/SpryValidationTextField.js" type="text/javascript"></script>
+	    <link href="../SpryAssets/SpryValidationTextField.css" rel="stylesheet" type="text/css" />
+
+        <link rel="stylesheet" href="css/layout.css" type="text/css" />
+        <link rel="stylesheet" href="css/colorpicker.css" type="text/css" />
+        <script type="text/javascript" src="js/colorpicker.js"></script>
+
+
+</head>
+  
+	<body><div id="body-wrapper"> <!-- Wrapper for the radial gradient background -->
+		
+		<?php require_once("sidebar_messages.php"); ?>
+		
+		<div id="insert-content"> <!-- Main Content Section with everything -->
+			
+            <?php require_once("top_bar.php"); ?>
+            
+			<?php 
+				require_once("breadcrump.php");
+				//passo l'id categoria
+				breadcrump($sufx_sezione,"edit",$id_padre);
+			?>
+
+	        <form action="<?php echo $editFormAction; ?>" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="nomeform" value="vv" />
+                <input type="hidden" name="id" value="<?php echo $_GET["id"]; ?>" />
+				<input type="hidden" name="<?=$padre_get_post?>" value="<?=$id_padre?>" />                
+			<div class="content-box"><!-- Start Content Box -->
+				
+				<div class="content-box-header">
+					
+					<h3>Modifica Categoria</h3>
+					
+					<ul class="content-box-tabs">
+						<?php
+						do{ 
+							$i = $row_rs_lingua["id"];
+						?>
+						<li><a href="#tab<?=$i?>" <?php echo ($i == $_SESSION["linguadefault"])?'class="default-tab"':''; ?>><?=$row_rs_lingua["nome"]?></a></li>
+                        <?php
+						}while($row_rs_lingua = mysqli_fetch_assoc($rs_lingua));
+						mysqli_data_seek($rs_lingua,0);
+						$row_rs_lingua = mysqli_fetch_assoc($rs_lingua);
+						?>
+               		</ul>
+					
+					<div class="clear"></div>
+					
+				</div> <!-- End .content-box-header -->
+				
+				<div class="content-box-content">
+					
+					<?php
+					do{ 
+						$i = $row_rs_lingua["id"];
+
+						mysqli_select_db($std_conn, $database_std_conn);
+						$query_rs_info = sprintf("SELECT * FROM %s WHERE id_ref=%s AND id_lingua=%s",
+							$tabella."_lingua",
+							GetSQLValueString($colname_Recordset1, "int"),
+							GetSQLValueString($i, "int"));
+						$rs_info = mysqli_query($std_conn, $query_rs_info) or die(mysqli_error($std_conn));
+						$row_rs_info = mysqli_fetch_assoc($rs_info);
+
+					?>
+					<div class="tab-content <?php echo ($i == $_SESSION["linguadefault"])?'default-tab':''; ?>" id="tab<?=$i?>"> <!-- This is the target div. id must match the href of this div's tab -->
+                    
+						
+						
+							<fieldset> <!-- Set class to "column-left" or "column-right" on fieldsets to divide the form into columns -->
+								
+							<p>
+								<label>* Nome (<?=$row_rs_lingua["nome"]?>)</label>
+								<input class="text-input medium-input" type="text" id="nome<?=$i?>" name="nome<?=$i?>" value="<?=$row_rs_info["nome"]?>" />
+                                <br /><small>Es: Baume &amp; Mercier</small>
+							  </p>		
+
+						    <p>
+								<label>Descrizione (<?=$row_rs_lingua["nome"]?>)</label>
+								<input class="text-input medium-input" type="text" id="descrizione<?=$i?>" name="descrizione<?=$i?>" value="<?=$row_rs_info["descrizione"]?>" />
+                                <br /><small>Es: Collezione orologi d'epoca e gioielleria</small>
+							  </p>		
+
+                              
+                            <p>
+                                <label>Abilita in questa lingua</label>
+                                
+                                <input type="checkbox" name="is_attivo<?=$i?>" value="1" <?php if (!(strcmp($row_rs_info['is_attivo'],"1"))) {echo "checked=\"checked\"";} ?> /> visualizza l'informazione in questa lingua.
+                            </p>
+							
+                                
+    
+							</fieldset>
+							
+							<div class="clear"></div><!-- End .clear -->
+												
+					</div> <!-- End #tabX -->
+					<?php
+						mysqli_free_result($rs_info);
+					}while($row_rs_lingua = mysqli_fetch_assoc($rs_lingua));
+					mysqli_data_seek($rs_lingua,0);
+					$row_rs_lingua = mysqli_fetch_assoc($rs_lingua);
+					?>		
+					
+        
+					
+				</div> <!-- End .content-box-content -->
+				
+			</div> <!-- End .content-box -->
+
+
+
+                <p>
+                	<label>Immagine Categoria (BIG)</label>
+                    <input type="file" name="img" /> <small>Dimensioni Consigliate: 997 x 997 - JPEG</small><br />
+					<?php
+						$nomefile = $row_Recordset1["nomefile"];
+						$filebig = $_SESSION["path_upload_admin"].$_SESSION["path_foto_collezioni"].$_SESSION["path_fotobig_prodotto"].$nomefile;
+						if(($nomefile!="")&&(file_exists($filebig))){
+                    ?>
+		                    Inserire un immagine solo se si intende sostituire quella corrente:<br />
+                            <a href="<?=$filebig?>" target="_blank"><img src="<?php echo $filebig; ?>" border="0" height="250" /></a>
+                    <?php
+	                    }
+                    ?>  
+                </p>
+
+                <p>
+                	<label>Miniatura Categoria (small)</label>
+                    <input type="file" name="imgsmall" /> <small>Dimensioni Consigliate: 248 x 248 - JPEG</small>
+					<?php
+						$nomefile = $row_Recordset1["nomefilesmall"];
+						$filesmall = $_SESSION["path_upload_admin"].$_SESSION["path_foto_collezioni"].$_SESSION["path_fotosmall_prodotto"].$nomefile;
+						if(($nomefile!="")&&(file_exists($filesmall))){
+                    ?>
+		                    Inserire un immagine solo se si intende sostituire quella corrente:<br />
+                            <img src="<?php echo $filesmall; ?>" border="0" height="200" />
+                    <?php
+	                    }
+                    ?>                     
+                </p>
+
+
+                <input type="hidden" id="color_code" name="color_code" value="<?=$row_Recordset1["color_code"]?>" />
+                <!--  
+                <label>Colore del testo nel titolo</label>
+                <div id="customWidget">
+                    <div id="colorSelector2"><div style="background-color: <?=$row_Recordset1["color_code"]?>"></div></div>
+                    <div id="colorpickerHolder2">
+                    </div>
+                </div>
+                -->
+                <!--
+                <p><label>Colore del testo nel titolo</label>
+                  <div class="colorettobox" style="background-color:#665145">&nbsp;</div>
+                  <div class="colorettoradio"><input type="radio" name="color_code" value="#665145" <?php if(!strcmp($row_Recordset1["color_code"],"#665145")){echo 'checked="checked"';} ?> /></div>
+                  <div class="colorettobox" style="background-color:#ffffff">&nbsp;</div>
+                  <div class="colorettoradio"><input type="radio" name="color_code" value="#ffffff" <?php if(!strcmp($row_Recordset1["color_code"],"#ffffff")){echo 'checked="checked"';} ?> /></div>
+                  <div class="colorettobox" style="background-color:#000000">&nbsp;</div>
+                  <div class="colorettoradio"><input type="radio" name="color_code" value="#000000" <?php if(!strcmp($row_Recordset1["color_code"],"#000000")){echo 'checked="checked"';} ?> /></div>
+                  <div class="clear_invisibile">&nbsp;</div>
+                </p>
+                -->
+
+    
+    		
+            <p>
+                <label>Mostra online</label>
+                
+                <input type="checkbox" name="is_attivo" value="1" <?php if (!(strcmp($row_Recordset1['is_attivo'],"1"))) {echo "checked=\"checked\"";} ?> /> visualizza pubblicamente l'informazione sul web.
+            </p>	 		
+            
+            <p>
+                <input class="button" type="submit" value="Aggiorna" />&nbsp;&nbsp;<input class="button" type="button" value="Chiudi" onclick="javascript:location.href='<?php echo $sufx_sezione; ?>_gest.php?<?=$padre_get_post?>=<?=$id_padre?>';" />
+            </p>
+            </form>			
+
+	
+			
+            <?php require_once("footer.php"); ?>
+
+			
+		</div> <!-- End #insert-content -->
+		
+	</div>
+    <!--
+	<script type="text/javascript">			
+		$('#colorpickerHolder2').ColorPicker({
+			flat: true,
+			color: $('#color_code').val(),
+			onSubmit: function(hsb, hex, rgb) {
+				$('#colorSelector2 div').css('backgroundColor', '#' + hex);
+				$('#color_code').val('#' + hex);
+				$('#colorpickerHolder2').stop().animate({height: widt ? 0 : 173}, 500);
+				widt = !widt;
+			}
+		});
+		$('#colorpickerHolder2>div').css('position', 'absolute');
+		var widt = false;
+		$('#colorSelector2').bind('click', function() {
+			$('#colorpickerHolder2').stop().animate({height: widt ? 0 : 173}, 500);
+			widt = !widt;
+		});
+	</script>  
+    -->
+    </body>
+    
+</html>
+<?php
+mysqli_free_result($Recordset1);
+mysqli_free_result($rs_lingua);
+?>

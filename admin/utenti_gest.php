@@ -148,7 +148,7 @@ if (isset($_SERVER['QUERY_STRING'])) {
 						<div class="notification attention png_bg">
 							<a href="#" class="close"><img src="resources/images/icons/cross_grey_small.png" title="Close this notification" alt="close" /></a>
 							<div>
-								Tramite la tabella sottostante puoi inserire / modificare / eliminare gli utenti che possono accedere a questo pannello e/o all'<strong>area riservata ai negozianti</strong>.</div>
+								Tramite la tabella sottostante puoi inserire / modificare / eliminare gli utenti che possono accedere a questo pannello.</div>
 						</div>
 						
 						<table>
@@ -215,8 +215,6 @@ if (isset($_SERVER['QUERY_STRING'])) {
 			case 1: echo "Amministratore"; break;
 			case 2: echo "Direttore"; break;
 			case 3: echo "Gestore"; break;
-			case 4: echo "Negoziante"; break;
-			case 5: echo "Utente"; break;
 		}
 	?></td>
     <td>
@@ -230,7 +228,7 @@ if (isset($_SERVER['QUERY_STRING'])) {
 <?php if ($totalRows_Recordset1 == 0) { // Show if recordset empty ?>
   <tr>
     <td>&nbsp;</td>
-    <td colspan="4">Nessun record in elenco</td>
+    <td colspan="3">Nessun record in elenco</td>
     <td>&nbsp;</td>
   </tr>
   <?php } // Show if recordset empty ?>

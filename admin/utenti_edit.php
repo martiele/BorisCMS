@@ -40,15 +40,13 @@ if($_POST["nomeform"]=="vv"){
 						 nome=%s,
 						 email=%s, 
 						 %s
-						 level=%s,
-						 is_attivo=%s
+						 level=%s
 						 WHERE id=%s",
 			   $tabella,
 			   GetSQLValueString($_POST['nome'], "text"),
 			   GetSQLValueString($_POST['email'], "text"),
 			   $qry_add,
 			   GetSQLValueString($_POST['level'], "int"),
-			   GetSQLValueString($is_attivo, "int"),
 			   GetSQLValueString($_POST['id'], "int"));
 
 	mysqli_select_db($std_conn, $database_std_conn);
@@ -163,21 +161,10 @@ header("Location: ".$sufx_sezione."_gest.php");
                                 <span class="confirmInvalidMsg">I valori non corrispondono.</span><span class="confirmRequiredMsg">È obbligatorio specificare un valore.</span></span><br /><small>Minimo 6 caratteri</small>
 							  </p>		
 
-<div class="invisibile_nascosto">
-                                <p>
-                                <label>Utente Attivo</label>
-                                <input type="checkbox" name="is_attivo" value="1" <?php if (!(strcmp($row_Recordset1['is_attivo'],"1"))) {echo "checked=\"checked\"";} ?> /> Abilita l'utente ad accedere allo shop online riservato ai negozi.
-                                </p>
-</div>
 							  <p>
 								<label>Livello di Accesso</label>
 								<span id="sprytextfield1">
-                                <select id="level" name="level">
-                                <!--
-                                <select id="level" name="level" onchange="return mostraextra();">
-                                <option value="5" <?php if (!(strcmp(5, $row_Recordset1["level"]))) {echo "selected=\"selected\"";} ?>>Utente</option>
-                                <option value="4" selected="selected" <?php if (!(strcmp(4, $row_Recordset1["level"]))) {echo "selected=\"selected\"";} ?>>Negoziante</option>
-                                -->
+                                <select id="level" name="level" >
                             <option value="3" <?php if (!(strcmp(3, $row_Recordset1["level"]))) {echo "selected=\"selected\"";} ?>>Gestore</option>
                           <?php if($_SESSION['MM_UserGroup']<=2){ //utenti direttori ?>
                           <option value="2" <?php if (!(strcmp(2, $row_Recordset1["level"]))) {echo "selected=\"selected\"";} ?>>Direttore</option>
@@ -188,20 +175,6 @@ header("Location: ".$sufx_sezione."_gest.php");
                                 </select>
 </p>		
 
-                                <div id="informazioni_aggiuntive" class="invisibile_nascosto">
-                                <p>
-								<label>Denominazione Negozio:</label>
-                                <input type="text" id="negozio" name="negozio" class="text-input medium-input" value="<?php echo $row_Recordset1["negozio"]; ?>" />
-							    </p>
-                                <p>
-								<label>Indirizzo:</label>
-                                <textarea id="indirizzo" name="indirizzo" cols="40" rows="4"><?php echo $row_Recordset1["indirizzo"]; ?></textarea>                               
-							    </p>
-                                <p>
-								<label>Telefono/i:</label>
-                                <textarea id="telefono" name="telefono" cols="40" rows="2"><?php echo $row_Recordset1["telefono"]; ?></textarea>                               
-							    </p>
-                                </div>		                            
                              	
 <p>
 									<input class="button" type="submit" value="Aggiorna" />&nbsp;&nbsp;<input class="button" type="button" value="Chiudi" onclick="javascript:location.href='<?php echo $sufx_sezione; ?>_gest.php';" />

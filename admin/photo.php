@@ -8,9 +8,8 @@ class Photo {
     
     private $tmp_name;
     public $name;
-	private $size;
     private $error;
-    private $max_size = 5000000;
+    private $max_size = 500000;
     private $accepted_mime_types = array('image/jpeg','image/png','image/gif');
     private $tmp;
     private $src;
@@ -27,7 +26,7 @@ class Photo {
     private $dst_height;
     
     function __construct($file_info, $max_size='') {
-        //echo isset($file_info['size'])?"1":"0";
+        
         $this->tmp_name = $file_info['tmp_name'];
         $this->name = $file_info['name'];
         $this->size = $file_info['size'];
@@ -47,7 +46,7 @@ class Photo {
            if (!in_array($this->mime,$this->accepted_mime_types)) {
                $errors[] = 'Hold it! You may upload files of type .jpg, .jpeg, .gif, or .png. What you tried to upload was something else.'; 
             }
-            if($this->size > $this->max_size) {
+            if($photo->size > $photo->max_size) {
                $errors[] = 'Whoa! Your photo is too big.  File size cannot exceed '.($this->max_size/1000).'KB.'; 
             }
        }
@@ -117,13 +116,18 @@ class Photo {
     
     public function move($directory) {
        $errors = array();
-       $success = move_uploaded_file($this->tmp_name, $directory.$this->name); 
-       if(!$success) {
-            $success = copy($this->tmp_name, $directory.$this->name); 
-       }
+       $success = @move_uploaded_file($this->tmp_name, $directory.$this->name); 
        if(!$success) { $errors[] = 'Sorry! I couldn\'t store your image.  Please try again later.'; }
        return $errors;
     }
+	
+    public function copia($directory) {
+       $errors = array();
+       $success = @copy($this->tmp_name, $directory.$this->name); 	   
+       if(!$success) { $errors[] = 'Sorry! I couldn\'t store your image.  Please try again later.'; }
+       return $errors;
+    }
+
     
     private function setDimensions($larg,$alte,$fit) {    
 		$newH = ($this->orig_height/$this->orig_width)*$larg;
