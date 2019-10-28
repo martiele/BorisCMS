@@ -400,7 +400,9 @@ ul.content-box-tabs li a.current {
 
 .pagination a.number {
 				border: 1px solid #ddd;
-                }
+                
+				line-height: 23px;
+}
 
 .pagination a.current {
                 background: #469400 url('../images/bg-button-green.gif') top left repeat-x !important;
@@ -821,4 +823,72 @@ div.wysiwyg iframe { border: 0; margin: 5px 0 0 0; clear: left; width: 97.5% !im
 .invisibile_nascosto{
 	display:none !important;
 	visibility:hidden !important;
+}
+
+
+/* Colori Ordini */
+.colore_ordine_stato1{ /* Abbandonato */
+	background-color:#999!important;
+}
+.colore_ordine_stato2{ /* Attesa Pagamento */
+	background-color:#F90;
+	color:#000;
+}
+.colore_ordine_stato3{ /* Richiesta inviata */
+	background-color:#F96;
+}
+.colore_ordine_stato4{ /* PAGATO */
+	background-color:#0F0;
+}
+.colore_ordine_stato5{ /* Preso in carico */
+	background-color:#0CF;
+}
+.colore_ordine_stato6{ /* Spedito */
+	background-color:#09F;
+}
+.colore_ordine_stato7{ /* Concluso */
+	background-color:#03C;
+	color:#FFF;
+}
+.colore_ordine_stato8{ /* Annullato */
+	background-color:#F30;
+}
+.colore_ordine_stato9{ /* Eliminato */
+	background-color:#F00;
+}
+
+.clear_invisibile{
+	clear:both;
+	height:1px;
+	line-height:1px;
+	font-size:1px;
+	margin-bottom:-1px;
+}
+.colorettobox{
+	height:16px;
+	width:16px;
+	float:left;
+	margin-right:8px;
+}
+.colorettoradio{
+	height:16px;
+	width:60px;
+	float:left;
+	margin-right:8px;
+	text-align:left;
+}
+
+#main-content ul.ax-file-list li, #insert-content ul.ax-file-list li {
+    background:inherit;
+    padding: 10px;
+}
+
+.scelta_utenti{
+
+}
+.box_utente{
+        float: left;
+        width: 400px;
+        margin-right: 30px;
+        margin-bottom: 18px;
 }

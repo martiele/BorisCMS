@@ -10,6 +10,8 @@
 <!-- Invalid Stylesheet. This makes stuff look pretty. Remove it if you want the CSS completely valid -->
 <link rel="stylesheet" href="resources/css/invalid.css" type="text/css" media="screen" />	
 
+<link rel="stylesheet" href="resources/css/blue.css" type="text/css" media="screen" />
+
 <!-- Colour Schemes
 
 Default colour scheme is green. Uncomment prefered stylesheet to use it.
@@ -29,8 +31,7 @@ Default colour scheme is green. Uncomment prefered stylesheet to use it.
 <!--                       Javascripts                       -->
 
 <!-- jQuery -->
-<!-- script type="text/javascript" src="resources/scripts/jquery-1.3.2.min.js"></script -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script type="text/javascript" src="resources/scripts/jquery-1.3.2.min.js"></script>
 
 <!-- jQuery Configuration -->
 <script type="text/javascript" src="resources/scripts/simpla.jquery.configuration.js"></script>
@@ -40,6 +41,9 @@ Default colour scheme is green. Uncomment prefered stylesheet to use it.
 
 <!-- jQuery WYSIWYG Plugin -->
 <script type="text/javascript" src="resources/scripts/jquery.wysiwyg.js"></script>
+
+<!-- Cerca (by Daniele) -->
+<script type="text/javascript" src="js/cerca.js"></script>
 
 <!-- Internet Explorer .png-fix -->
 

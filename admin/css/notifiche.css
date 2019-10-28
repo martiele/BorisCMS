@@ -1,0 +1,84 @@
+@charset "UTF-8";
+/* CSS Document */
+
+.divnotifiche{
+	margin-top:10px;
+	margin-bottom:20px;
+}
+
+.colonnanotifiche{
+	float:left;
+	width:26%;	
+	text-align:left;
+	padding:2%;
+	margin-top:10px;
+}
+
+.colonnanotifiche.colonnanotifiche23{
+	width:60%;	
+}
+.colonnanotifiche.colonnanotifiche13r{
+	float:right;	
+}
+
+.colonnanotifiche ul{
+	margin-top:20px;
+}
+.colonnanotifiche ul ul{
+	margin-top:6px;
+}
+.colonnanotifiche ul ul img{
+	vertical-align:middle;
+}
+
+.interessati{
+	background-color:#D6F5BF;
+}
+.interessati .titoletto{
+	color:#009933;
+	font-size:14px;
+	font-weight:bold;
+}
+
+.interessati2{
+	background-color:#FFC;
+}
+.interessati2 .titoletto{
+	color:#FF6600;
+	font-size:14px;
+	font-weight:bold;
+}
+
+.inattesa{
+	margin-left:5%;
+	background-color:#DEDEDE;
+}
+.inattesa .titoletto{
+	font-size:14px;
+	font-weight:bold;
+}
+
+.noninteressati{
+	margin-left:5%;
+	background-color:#F6C1B9;
+}
+.noninteressati .titoletto{
+	color:#F00;
+	font-size:14px;
+	font-weight:bold;
+}
+
+#main-content ul li, #insert-content ul li.speciale {
+    background-position: 0px 5px;
+	line-height:1.5em;
+	margin-bottom:20px;
+}
+#main-content ul li, #insert-content ul li.speciale strong.grosso{
+	font-size:14px;
+	margin-bottom:8px;
+	display:block;
+}
+#main-content ul li, #insert-content ul li ul li {
+    background: url('../resources/images/icons/bullet_white.png') center left no-repeat;
+}
+

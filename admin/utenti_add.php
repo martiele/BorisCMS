@@ -29,13 +29,12 @@ if($_POST["nomeform"]=="vv"){
 	mysqli_free_result($nextOrdinamento);
 		
 	$is_attivo = ($_POST['is_attivo']=="1")?1:0;
-	$insertSQL = sprintf("INSERT INTO %s (nome, email, pswd, level, is_attivo, ordinamento) VALUES (%s, %s, %s, %s, %s, %s)",
+	$insertSQL = sprintf("INSERT INTO %s (nome, email, pswd, level, ordinamento) VALUES (%s, %s, %s, %s, %s)",
 			   $tabella,
 			   GetSQLValueString($_POST['nome'], "text"),
 			   GetSQLValueString($_POST['email'], "text"),
 			   GetSQLValueString($_POST['pswd'], "text"),
 			   GetSQLValueString($_POST['level'], "int"),
-			   GetSQLValueString($is_attivo, "int"),
 			   GetSQLValueString($ordinamento, "int"));
 
 	mysqli_select_db($std_conn, $database_std_conn);
@@ -148,23 +147,12 @@ if($_POST["nomeform"]=="vv"){
                                 <br /><small>Minimo 6 caratteri</small>
 							  </p>		
 
-                              
-<div class="invisibile_nascosto">
-                                <p>
-                                <label>Utente Attivo</label>
-                                <input type="checkbox" name="is_attivo" value="1" checked="checked" /> Abilita l'utente ad accedere allo shop online riservato ai negozi.
-                                </p>
-</div>
+
 
 							  <p>
 								<label>Livello di Accesso</label>
 								<span id="sprytextfield1">
                                 <select id="level" name="level">
-                                	<!--
-                                <select id="level" name="level" onchange="return mostraextra();">
-                               	    <option value="5">Utente</option>
-                                	<option value="4" selected="selected">Negoziante</option>
-                                    -->
                                 	<option value="3" selected="selected">Gestore</option>
                                     <?php if($_SESSION['MM_UserGroup']<=2){ //utenti direttori ?>
                                 	<option value="2">Direttore</option>
@@ -174,24 +162,7 @@ if($_POST["nomeform"]=="vv"){
                                     <?php } ?>
                                 </select>
 </p>		
-
-		                         
-                                <div id="informazioni_aggiuntive" class="invisibile_nascosto">
-                                <p>
-								<label>Denominazione Negozio:</label>
-                                <input type="text" id="negozio" name="negozio" class="text-input medium-input" />
-							    </p>
-                                <p>
-								<label>Indirizzo:</label>
-                                <textarea id="indirizzo" name="indirizzo" cols="40" rows="4"></textarea>                               
-							    </p>
-                                <p>
-								<label>Telefono/i:</label>
-                                <textarea id="telefono" name="telefono" cols="40" rows="2"></textarea>                               
-							    </p>
-                                </div>
-                                	
-							
+		                                                       
 								
 								<p>
 									<input class="button" type="submit" value="Inserisci" />

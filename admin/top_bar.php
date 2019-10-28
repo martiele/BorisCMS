@@ -8,17 +8,21 @@
 
 <!-- Page Head -->
 <h2>Ciao <?php echo $_SESSION['dny_Nome']; ?></h2>
-<p id="page-intro">Benvenuto nell'area di generazione files</p>
+<p id="page-intro">Benvenuto nell'area di amministrazione del sito.</p>
 
 <ul class="shortcut-buttons-set"> <!-- Replace the icons URL's with your own -->
                 
-    <li><a class="shortcut-button" href="modelli_gest.php"><span>Modelli</span></a></li>
+    <li><a class="shortcut-button" href="utenti_newsletter_gest.php"><span>
+                Gestione Utenti
+    </span></a></li>
     
-    <li><a class="shortcut-button" href="files_gest.php"><span>Files</span></a></li>
+    <li><a class="shortcut-button" href="news_gest.php"><span>
+                Gestione Articoli
+    </span></a></li>
 
-    <?php if($_SESSION['MM_UserGroup']<=2){ //utenti amministratori o gestori ?>    
-    <li><a class="shortcut-button" href="utenti_gest.php"><span>Amministratori</span></a></li>
-    <?php } ?>
+    <li><a class="shortcut-button" href="invionews_gest.php"><span>
+                Invia Notifiche
+    </span></a></li>
 
     
 </ul><!-- End .shortcut-buttons-set -->
